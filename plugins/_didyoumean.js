@@ -1,5 +1,6 @@
 import didyoumean from 'didyoumean'
 import similarity from 'similarity'
+import fetch from 'node-fetch'
 
 export async function before(m, {
     match,
@@ -22,19 +23,16 @@ export async function before(m, {
         } else if (sim >= 0.5) {
             emoji = '😅'
         }
-        let caption = ` Hai @${who.split("@")[0].split('\n')[0]} 👋
-        
-        
-Apakah yang kamu maksud?
-*${usedPrefix + mean}*
+        let caption = `Are you looking for the following ${mean}? 
 
-Similarity: *${Number(sim * 100).toFixed(2)}%* ${emoji}`
-        await this.sendMessage(m.chat, {
-            text: caption,
-            mentions: this.parseMention(caption)
-        }, {
-            quoted: m
-        });
+ ◦ Name Command: *${usedPrefix + mean}*
+ ◦ Results of Similarities: *${Number(sim * 100).toFixed(2)}%* ${emoji}`
+        await this.sendMessageModify(m.chat, caption, m, {
+title: me,
+ads: true, 
+largeThumb: true,
+thumbnail: await(await fetch(marin)).buffer()
+})
     }
 }
 
